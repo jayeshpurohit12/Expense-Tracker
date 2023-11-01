@@ -89,7 +89,10 @@ const Transactions = () => {
   };
 
   return (
-    <ImageBackground source={Images.Started} style={styles.backgroundImage}>
+    <ImageBackground
+      source={Images.Started}
+      style={styles.backgroundImage}
+      defaultSource={Images.Started}>
       <SafeAreaView style={styles.safeView} edges={['bottom', 'left', 'right']}>
         <Text style={[styles.transactionHeading, {paddingTop: insets.top}]}>
           Transactions
@@ -162,6 +165,7 @@ const Transactions = () => {
         themeVariant="light"
         date={selectedDate || new Date()}
         maximumDate={new Date()}
+        isDarkModeEnabled={false}
       />
     </ImageBackground>
   );

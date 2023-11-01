@@ -1,4 +1,4 @@
-import {View, Text, ImageBackground} from 'react-native';
+import {View, Text, ImageBackground, TouchableOpacity} from 'react-native';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import React, {useCallback, useMemo, useRef} from 'react';
 import Images from '../../Images';
@@ -36,18 +36,23 @@ const Home = () => {
   };
 
   return (
-    <ImageBackground source={Images.Started} style={styles.backgroundImage}>
+    <ImageBackground
+      source={Images.Started}
+      style={styles.backgroundImage}
+      defaultSource={Images.Started}>
       <View style={[styles.container, {paddingTop: insets.top}]}>
         <Text style={styles.nameText}>Piggypouch</Text>
-        <View style={styles.settingIconContainer}>
+        <TouchableOpacity
+          style={styles.settingIconContainer}
+          activeOpacity={0.9}
+          onPress={handleSetting}>
           <Ionicons
             name="settings-outline"
             size={25}
             color={colors.white.default}
             style={{padding: scale(5)}}
-            onPress={handleSetting}
           />
-        </View>
+        </TouchableOpacity>
 
         <Wallet />
         <RecentTransaction bottomSheetRef={bottomSheetRef} />

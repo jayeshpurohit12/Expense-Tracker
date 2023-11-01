@@ -16,6 +16,7 @@ import {storage} from '../../storage';
 import CalendarModal from './partials/calendar-modal';
 import BottomSheet, {BottomSheetBackdrop} from '@gorhom/bottom-sheet';
 import moment from 'moment';
+import {Keyboard} from 'react-native';
 
 interface IParams {
   paymentType: string;
@@ -25,7 +26,6 @@ interface IValues {
   amount: string;
   name: string;
   category: string;
-  transactionDate: string;
 }
 
 const validationSchema = Yup.object().shape({
@@ -96,112 +96,114 @@ const AddTransactions = () => {
   return (
     <ImageBackground
       source={Images.Started}
+      defaultSource={Images.Started}
       style={[styles.ImageBackground, {paddingTop: insets.top}]}>
-      <View style={styles.headerContainer}>
-        <Text style={styles.creditDebitText}>{`Add ${
-          paymentType === paymentTypeEnum.DEBITED ? 'Expense' : 'Income'
-        }`}</Text>
-        <FastImage
-          source={
-            paymentType === paymentTypeEnum.DEBITED
-              ? Images.Debited
-              : Images.Credited
-          }
-          style={styles.creditDebitImage}
-          resizeMode="contain"
-        />
-      </View>
+      <TouchableOpacity activeOpacity={1} onPress={() => Keyboard.dismiss()}>
+        <View style={styles.headerContainer}>
+          <Text style={styles.creditDebitText}>{`Add ${
+            paymentType === paymentTypeEnum.DEBITED ? 'Expense' : 'Income'
+          }`}</Text>
+          <FastImage
+            source={
+              paymentType === paymentTypeEnum.DEBITED
+                ? Images.Debited
+                : Images.Credited
+            }
+            style={styles.creditDebitImage}
+            resizeMode="contain"
+          />
+        </View>
 
-      <Formik
-        initialValues={initialValues}
-        validationSchema={validationSchema}
-        onSubmit={onSubmit}>
-        {({errors, handleChange, values, handleSubmit, handleBlur}) => (
-          <View style={{marginTop: scale(50)}}>
-            <View style={styles.flexView}>
-              <BlurView
-                style={styles.blurView}
-                blurAmount={20}
-                blurType="light"
-              />
-              <TextInput
-                placeholder="Amount"
-                placeholderTextColor={colors.white.default}
-                style={styles.textInput}
-                onChangeText={handleChange('amount')}
-                onBlur={handleBlur('amount')}
-                value={values.amount}
-                keyboardType="number-pad"
-              />
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={onSubmit}>
+          {({errors, handleChange, values, handleSubmit, handleBlur}) => (
+            <View style={{marginTop: scale(50)}}>
+              <View style={styles.flexView}>
+                <BlurView
+                  style={styles.blurView}
+                  blurAmount={20}
+                  blurType="light"
+                />
+                <TextInput
+                  placeholder="Amount"
+                  placeholderTextColor={colors.white.default}
+                  style={styles.textInput}
+                  onChangeText={handleChange('amount')}
+                  onBlur={handleBlur('amount')}
+                  value={values.amount}
+                  keyboardType="number-pad"
+                />
+              </View>
+              <Text style={styles.error}>{errors.amount}</Text>
+
+              <View style={styles.flexView}>
+                <BlurView
+                  style={styles.blurView}
+                  blurAmount={20}
+                  blurType="light"
+                />
+                <TextInput
+                  placeholder="Name"
+                  placeholderTextColor={colors.white.default}
+                  style={styles.textInput}
+                  onChangeText={handleChange('name')}
+                  onBlur={handleBlur('name')}
+                  value={values.name}
+                />
+              </View>
+              <Text style={styles.error}>{errors.name}</Text>
+
+              <View style={styles.flexView}>
+                <BlurView
+                  style={styles.blurView}
+                  blurAmount={20}
+                  blurType="light"
+                />
+                <TextInput
+                  placeholder="Category"
+                  placeholderTextColor={colors.white.default}
+                  style={styles.textInput}
+                  onChangeText={handleChange('category')}
+                  onBlur={handleBlur('category')}
+                  value={values.category}
+                />
+              </View>
+              <Text style={styles.error}>{errors.category}</Text>
+
+              <TouchableOpacity
+                style={styles.flexView}
+                activeOpacity={0.9}
+                onPress={handleCalendar}>
+                <BlurView
+                  style={styles.blurView}
+                  blurAmount={20}
+                  blurType="light"
+                />
+                <TextInput
+                  placeholder="Transaction Date"
+                  placeholderTextColor={colors.white.default}
+                  style={styles.textInput}
+                  value={formattedDate}
+                  editable={false}
+                  pointerEvents="none"
+                />
+              </TouchableOpacity>
+              <Text style={styles.error}>{errors.transactionDate}</Text>
+
+              <TouchableOpacity
+                style={styles.buttonContainer}
+                activeOpacity={0.9}
+                onPress={() => handleSubmit()}>
+                <Text style={styles.submitText}>{`Submit ${
+                  paymentType === paymentTypeEnum.DEBITED ? 'Expense' : 'Income'
+                }`}</Text>
+              </TouchableOpacity>
             </View>
-            <Text style={styles.error}>{errors.amount}</Text>
-
-            <View style={styles.flexView}>
-              <BlurView
-                style={styles.blurView}
-                blurAmount={20}
-                blurType="light"
-              />
-              <TextInput
-                placeholder="Name"
-                placeholderTextColor={colors.white.default}
-                style={styles.textInput}
-                onChangeText={handleChange('name')}
-                onBlur={handleBlur('name')}
-                value={values.name}
-              />
-            </View>
-            <Text style={styles.error}>{errors.name}</Text>
-
-            <View style={styles.flexView}>
-              <BlurView
-                style={styles.blurView}
-                blurAmount={20}
-                blurType="light"
-              />
-              <TextInput
-                placeholder="Category"
-                placeholderTextColor={colors.white.default}
-                style={styles.textInput}
-                onChangeText={handleChange('category')}
-                onBlur={handleBlur('category')}
-                value={values.category}
-              />
-            </View>
-            <Text style={styles.error}>{errors.category}</Text>
-
-            <TouchableOpacity
-              style={styles.flexView}
-              activeOpacity={0.9}
-              onPress={handleCalendar}>
-              <BlurView
-                style={styles.blurView}
-                blurAmount={20}
-                blurType="light"
-              />
-              <TextInput
-                placeholder="Transaction Date"
-                placeholderTextColor={colors.white.default}
-                style={styles.textInput}
-                value={formattedDate}
-                editable={false}
-                pointerEvents="none"
-              />
-            </TouchableOpacity>
-            <Text style={styles.error}>{errors.transactionDate}</Text>
-
-            <TouchableOpacity
-              style={styles.buttonContainer}
-              activeOpacity={0.9}
-              onPress={() => handleSubmit()}>
-              <Text style={styles.submitText}>{`Submit ${
-                paymentType === paymentTypeEnum.DEBITED ? 'Expense' : 'Income'
-              }`}</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-      </Formik>
-
+          )}
+        </Formik>
+      </TouchableOpacity>
       <BottomSheet
         ref={bottomSheetRef}
         index={-1}

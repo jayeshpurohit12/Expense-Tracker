@@ -17,7 +17,7 @@ export const styles = StyleSheet.create({
     fontSize: scale(15),
     marginBottom: scale(20),
   },
-  backgroundImage: {width: '100%', height: '100%'},
+  backgroundImage: {flex: 1, paddingHorizontal: scale(15)},
   buttonContainer: {
     backgroundColor: colors.white.default,
     padding: scale(20),
